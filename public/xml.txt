@@ -1,0 +1,8 @@
+<xml>
+<ToUserName><![CDATA[oLSypjjc5KLXigZC6-IeCiW139NM]]></ToUserName>
+<FromUserName><![CDATA[gh_dd6146293b45]]></FromUserName>
+<CreateTime>1395993438</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA[欢迎您绑定手机号，轻松绑定后即可享受VIP优惠价格。
+<a href="http://114.241.25.22/Weixin/Bind/mobile?wxid=gh_dd6146293b45&openid=oLSypjjc5KLXigZC6-IeCiW139NM&sign=6bed8be29ebf828b018e58cfeed929d311a7bac8"> 点击这里，立即绑定 </a>]]></Content>
+</xml>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <title>吃货宝</title>
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+        <meta content="yes" name="apple-mobile-web-app-capable" />
+        <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" />
+        <meta name="description" content="吃货宝点餐系统是由内蒙古同城惠购信息技术有限公司自主研发的新一代微信自助点餐平台，结合微信公众帐号的粉丝关注和朋友圈分享等社交功能，让餐饮菜品不止停留在纸上，更可随着微信社交平台营销到朋友圈里，通过微信点单，发挥口碑营销自我增值的作用，不论餐饮业老板，创业人士，都可以使用和推广微信订餐系统，共同开启微信点餐财富大门，财富热线0471-6632789" />
+        <meta name="keywords" content="自助点餐，微信点餐，微信订餐，微信点单,微信外卖,手机点餐,微信点餐平台,微信订餐系统,微信外卖系统" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="apple-touch-fullscreen" content="yes">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon_48.ico" type="image/x-icon"/>
+        <link rel="apple-touch-icon" href="/favicon_64.ico" />
+        <meta name="twcClient" content="false" id="twcClient" />
+        <link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+        <style>
+            form{
+                padding: 0 5px;
+            }
+            form input{
+                width: 100%;
+                height: 45px;
+                margin-bottom: 15px;
+            }
+            form button{
+                width: 100%;
+                height: 45px;
+                background-color: blue;
+                color: #fff;
+                font-size: 16px;
+            }
+            .error{
+                color:red;
+            }
+        </style>
+
+    </head>
+    <body>
+        <?php
+        if (isset($errCode) && $errCode == 200) {
+            echo '<div class="alert alert-warning alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>绑定成功！</strong>
+</div>';
+        }if (isset($errCode) && $errCode == 201) {
+            echo '<div class="alert alert-warning alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>您的手机号已经绑定过了，无需重复绑定！</strong>
+</div>';
+        } elseif (isset($errCode) && $errCode > 300) {
+            echo '<div class="alert alert-warning alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Warning!</strong> ' . $errCode . ' .
+</div>';
+        }
+        ?>
+        <form role="form" id="bindform" method="post" action="">
+            <div class="form-group">
+                <h3><label for="mobile">你的手机</label></h3>
+                <input type="number" name="mobile" class="form-control  input-lg" id="mobile" data-rule-trim="true" data-msg-required="手机号码为必填项" data-rule-required="true" data-msg-regex="手机号码格式不正确" data-rule-regex="/^0?(13[0-9]|15[012356789]|18[0236789]|14[57])[0-9]{8}$/" data-msg-rangelength="手机号码长度为1到11位" data-rule-rangelength="[1,11]" minlength="1" maxlength="11" data-msg-minlength="手机号码长度为1到11位" data-msg-maxlength="手机号码长度为1到11位" placeholder="输入手机号码">
+
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary">立即绑定</button>
+        </form>
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+        <script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+        <script src="//js.chihuobao365.com/js/libs/jquery.validate.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#bindform").validate();
+
+            });
+            function checkPhone(phone) {
+                //var ab=/^(13[0-9]|15[1|0|3|6|7|8|9]|18[6|8|9])\d{8}$/;  
+                var ab = /^([0-9]{11})?$/;
+                if (ab.test(phone) == false) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        </script>
+    </body>
+</html>
