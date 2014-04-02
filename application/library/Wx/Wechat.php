@@ -57,11 +57,13 @@ class Wx_Wechat {
     private $_Latitude;
     private $_Longitude;
     private $_Precision;
+    public $_postData;
 
 
 
     public function __construct() {
         $postStr = file_get_contents("php://input");
+        $this->_postData=$postStr;
         if (!empty($postStr)) {
             $post_obj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             
@@ -148,9 +150,12 @@ class Wx_Wechat {
     /**
      * 调试用
      */
-    public function log($content = null) {
+    public function log($content = null,$fileName='xml.txt') {
 //        die('9877');
         if ($content) {
+            if(is_array($content)){
+                $data=  json_encode($content);
+            }
             $data = $content;
         } else {
             //set always_populate_raw_post_data enable_post_data_reading On
@@ -158,7 +163,7 @@ class Wx_Wechat {
             $postStr = file_get_contents("php://input");
             $data = json_encode($postStr);
         }
-        file_put_contents('xml.txt', $data);
+        file_put_contents($fileName, $data);
     }
     
 

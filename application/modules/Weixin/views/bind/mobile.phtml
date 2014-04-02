@@ -34,6 +34,11 @@
             .error{
                 color:red;
             }
+            .showmsg{
+                width: 100%;
+                text-align: left;
+                clear: both;
+            }
         </style>
 
     </head>
@@ -59,8 +64,14 @@
         <form role="form" id="bindform" method="post" action="">
             <div class="form-group">
                 <h3><label for="mobile">你的手机</label></h3>
-                <input type="number" name="mobile" class="form-control  input-lg" id="mobile" data-rule-trim="true" data-msg-required="手机号码为必填项" data-rule-required="true" data-msg-regex="手机号码格式不正确" data-rule-regex="/^0?(13[0-9]|15[012356789]|18[0236789]|14[57])[0-9]{8}$/" data-msg-rangelength="手机号码长度为1到11位" data-rule-rangelength="[1,11]" minlength="1" maxlength="11" data-msg-minlength="手机号码长度为1到11位" data-msg-maxlength="手机号码长度为1到11位" placeholder="输入手机号码">
-
+                <input type="number" name="mobile" class="form-control  input-lg" id="mobile" <?php echo $this->_view->getInputAttrs($rules, 'mobile') ?> placeholder="输入手机号码">
+                <div class="showmsg">
+                    <?php
+                    if (isset($error['mobile'])) {
+                        $this->_view->showValidateError($error['mobile']);
+                    }
+                    ?>
+                </div>
             </div>
             <button type="submit" class="btn btn-lg btn-primary">立即绑定</button>
         </form>
@@ -69,7 +80,7 @@
         <script src="//js.chihuobao365.com/js/libs/jquery.validate.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-                $("#bindform").validate();
+//                $("#bindform").validate();
 
             });
             function checkPhone(phone) {

@@ -77,7 +77,7 @@ $menu = '{
     ]
 }';
 //        $accessToken = $this->getAccessToken();
-        $accessToken = 'CbmFItl9MfDglXIeFTgdAbgJTLQ7nXowcWIm8pf2GOVBDYxO2smhwMRYkk2Z_8FZhLPGcWaXoFf5rxBQvC-FIhXydfPNPE7gJNWJVUfYer3WHY6ycS9chI7pyUn05oKP10yHDyoCcmQF9GzXfqjnVg';
+        $accessToken = '6qrkyp924nozlS17NHDgvpZ5L76ECr2_iNqsdz-9Lr3-gDsqEgUmz2NTsMsK380drCpdAg3TlghODQupNwS4JcfzZNFn-sgWzeF66vZuuHwE9WjOvy63TJlHnloJfhbUnoTKIi25F4M9IQQA8N1wrQ';
         $data = $this->wxApi->createMenu($menu, $accessToken);
         $data = json_decode($data, true);
         if ($data['errcode'] == 0 && $data['errmsg'] == 'ok') {
