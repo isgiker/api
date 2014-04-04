@@ -9,10 +9,12 @@ class BindController extends Core_Basic_Controllers {
 
     private $wxApi;
     private $model;
+    private $redisModel;
 
     public function init() {
         $this->wxApi = new Wx_Api();
         $this->model = new Weixin_ApiModel();
+        $this->redisModel = new RedisModel();
         $this->getView()->assign('_view', $this->getView());
     }
 
@@ -24,6 +26,8 @@ class BindController extends Core_Basic_Controllers {
             $openid = @trim($_GET['openid']);
             $wxid = @trim($_GET['wxid']);
 
+            $shopId=  $this->model->getShopId($wxid);
+            $userId=  $this->model->getUserId($mobile);
 
             $v = new validation(); //数据校验
             $v->validate($rules, $_POST);
@@ -41,7 +45,14 @@ class BindController extends Core_Basic_Controllers {
                 if ($wxid) {
                     //获取token
                     $wxAppInfo = $this->model->getWxappInfo($wxid);
-                    $accessToken = $this->wxApi->getAccessToken($wxAppInfo['appId'], $wxAppInfo['appSecret']);
+                    //如果缓存过期或无数据则调用微信api
+                    $accessToken = $this->redisModel->getAccessToken($shopId);
+                    if(!$accessToken){
+                        $accessToken = $this->wxApi->getAccessToken($wxAppInfo['appId'], $wxAppInfo['appSecret']);
+                        //写入缓存
+                        $this->redisModel->setAccessToken($shopId,$accessToken);                        
+                    }
+                    
                 } else {
                     $errCode = '50002';
                 }
@@ -70,9 +81,7 @@ class BindController extends Core_Basic_Controllers {
                             $errCode = 200;
                             
                             //如果商家开启了会员积分功能模块，首次关注微信公众号赠送积分（由商家设置）
-                            $shopId=  $this->model->getShopId($wxid);
-                            $userId=  $this->model->getUserId($mobile);
-                            
+                                                        
                             if ($shopId) {
                                 $isOpen = $this->model->scoreIsOpen($shopId);
                                 if ($isOpen) {
@@ -93,6 +102,15 @@ class BindController extends Core_Basic_Controllers {
             }
             $this->getView()->assign("errCode", $errCode);
         }
+    }
+    
+    public function testAction() {
+        $redis=Factory::getRedisDBO();
+        $v=$redis->hGet('testhashss', 'key1');
+        echo $v;
+        $redis->close();
+        
+        return false;
     }
 
 }

@@ -1,7 +1,8 @@
 <xml>
-<ToUserName><![CDATA[oLSypjjc5KLXigZC6-IeCiW139NM]]></ToUserName>
+<ToUserName><![CDATA[oLSypjtK_EJ1HuGvh89zM4eIey6E]]></ToUserName>
 <FromUserName><![CDATA[gh_dd6146293b45]]></FromUserName>
-<CreateTime>1396431621</CreateTime>
+<CreateTime>1396595624</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA[您本次上网的随机密码是：132(30分钟有效)；点击我们的wifi热点->选择微信登录->输入收到的随机密码。]]></Content>
+<Content><![CDATA[欢迎您绑定手机号，轻松绑定后即可享受VIP优惠价格。
+<a href="http://114.250.22.103/Weixin/Bind/mobile?wxid=gh_dd6146293b45&openid=oLSypjtK_EJ1HuGvh89zM4eIey6E&sign=a670f01970e43a91022baa47575ff1f8ac10b6a0"> 点击这里，立即绑定 </a>]]></Content>
 </xml>
