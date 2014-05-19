@@ -26,7 +26,7 @@ class BaseController extends Core_Basic_Controllers {
         $appid = 'wx1d291887f0e758ab';
         $secret = '25d8f95f363ed0a105e1f27fe0ced69d';
         $accessToken=$this->wxApi->getAccessToken($appid, $secret);
-        echo $accessToken;
+        print_r($accessToken);
     }
 
     /**
@@ -98,9 +98,13 @@ $menu = '{
         $sendMsgType='text';
         $sendMsgContent='Hello!';
         $openid='oLSypjjc5KLXigZC6-IeCiW139NM';
-        $accessToken='O8slsS4R3c6FoJZtGXR8mxj4_jaVzOsVEv97LujPxi9bE2b_ssoXfAVVUhY9mbrgLA_Ybqcdntf07lLfI63QO877k3JRq0M3bRoKp-DM9e_C44JSfGvn2U_QRA-csxpfzO8r9BTG0qGNytMPJ-b-Uw';
+        $accessToken='11zI0KCwj8Ex1cJ7u5sHUfJpbfCHTKEegy8kJWUBsn8LEoA9OO4GBcMGq33CDK-aMA7GHaqlXgUpOG6GW9xsUGgmZBb5z8MuMc8pv1a_VERmd4i27rkLjo0SsSlPCOpOeY1Me_a-baK_w9U1vlKISeCg';
         $data = $this->wxApi->sendMsg($sendMsgType, $sendMsgContent, $openid, $accessToken);
         print_r($data);
+        $data = json_decode($data, true);
+                    if($data['errcode']=='40001'){
+                        die("999");
+                    }
     }
 
 }

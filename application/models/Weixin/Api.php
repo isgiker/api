@@ -38,7 +38,8 @@ class Weixin_ApiModel {
                 . "language='$wxUserInfo[language]',"
                 . "headimgurl='$wxUserInfo[headimgurl]',"
                 . "subscribeTime='$wxUserInfo[subscribe_time]',"
-                . "bindTime='$bindTime'"
+                . "bindTime='$bindTime',"
+                . "isUsed='0';"
                 ;
         return  $this->ssodb->query($query);
     }
@@ -129,6 +130,22 @@ class Weixin_ApiModel {
 	 						"value":"[1,11]",
 	 						"message":"%s%长度为1到11位"
 	 					}
+		  			]
+				},
+				{
+					"value":"capture",
+					"label":"验证码",
+					"rules":[
+						{
+	  						"name":"trim"
+	  					},
+						{
+	 						"name":"required",
+	 						"message":"%s%为必填项"
+	 					},
+	  					{
+	  						"name":"clearxss"
+	  					}
 		  			]
 				}
 			]

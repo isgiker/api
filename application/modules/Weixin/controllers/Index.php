@@ -4,6 +4,8 @@
  * @name IndexController
  * @author Vic
  * @desc 微信接口初始化
+ * 接口URL：http://114.250.16.34/weixin/Index/index
+ * 接口token：chihuobao365
  */
 class IndexController extends Core_Basic_Controllers {
 
@@ -38,7 +40,7 @@ class IndexController extends Core_Basic_Controllers {
                                 $sign = sha1($toUsername . '@' . $fromUsername);
                                 $content = '欢迎您绑定手机号，轻松绑定后即可享受VIP优惠价格。';
                                 $content.="\n";
-                                $content.='<a href="http://114.250.22.103/Weixin/Bind/mobile?wxid=' . $toUsername . '&openid=' . $fromUsername . '&sign=' . $sign . '"> 点击这里，立即绑定 </a>';
+                                $content.='<a href="http://114.250.16.34/Weixin/Bind/mobile?wxid=' . $toUsername . '&openid=' . $fromUsername . '&sign=' . $sign . '"> 点击这里，立即绑定 </a>';
 
                                 $wechatObj->responseMsg('text', $content);
                             } elseif ($eventKey == 'KW_WX_BUSINESS_JOIN') {
@@ -107,6 +109,45 @@ class IndexController extends Core_Basic_Controllers {
                             
                             //回复用户
                             $post_obj = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+                            $content = trim($post_obj->Content);
+                            $wechatObj->responseMsg('text', $content);
+                            break;
+                        
+                            
+                        //hao118接口转发
+                        case 'KW_WX_BIND_MOBILE':
+                            //自定义回复
+//                        $text = 'wifi密码是：1314888';
+//                        $wechatObj->responseMsg('text', $text);
+//                        
+//                      /*指定第三方回复*/
+                            //第三方开发者url
+                            $apiurl = 'http://www.hao118.com/index.php/api/jepnhx1397105623';
+                            if (!Util::strexists($apiurl, '?')) {
+                                $apiurl .= '?';
+                            } else {
+                                $apiurl .= '&';
+                            }
+                            //第三方开发者token
+                            $token = 'jepnhx1397105623';
+                            //构建签名
+                            $timestamp = time();
+                            $nonce = rand(100, 10000);
+
+                            $sign = array(
+                                'timestamp' => $timestamp,
+                                'nonce' => $nonce
+                            );
+                            $signkey = array($token, $sign['timestamp'], $sign['nonce']);
+                            sort($signkey, SORT_STRING);
+                            $sign['signature'] = sha1(implode($signkey));
+                            $apiurl .= http_build_query($sign, '', '&');
+                            $response = Util::curl_Http_Request($apiurl, $wechatObj->_postData, 'POST', array('Content-Type: text/xml; charset=utf-8'));
+                            $wechatObj->log($response);
+                            
+                            //回复用户
+                            $response=  str_replace('<?xml version="1.0"?>', '', $response);//hao118的xml格式加了这行，要把它去掉
+                            $post_obj = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);                 
                             $content = trim($post_obj->Content);
                             $wechatObj->responseMsg('text', $content);
                             break;

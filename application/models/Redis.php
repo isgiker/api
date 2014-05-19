@@ -14,29 +14,37 @@ class RedisModel {
     
     /**
      * 获取商家Redis accessToken值
-     * @param string $shopId
+     * @param string $wxid
      * @return boolean|string
      */
-    public function getAccessToken($shopId) {
-        if(!$shopId){
+    public function getAccessToken($wxid) {
+        if(!$wxid){
             return false;
         }
-        $accessToken = $this->redis->hGet("biz_$shopId", 'accessToken');
+        $accessToken = $this->redis->get("accessToken_$wxid");
 //        $redis->close();
         return $accessToken;
     }
     
     /**
      * 获取商家Redis accessToken值
-     * @param string $shopId
+     * @param string $wxid
      * @return boolean|string
      */
-    public function setAccessToken($shopId,$accessToken) {
-        if(!$shopId){
+    public function setAccessToken($wxid,$accessToken) {
+        if(!$wxid || !$accessToken){
             return false;
         }
-        $result = $this->redis->hSet("biz_$shopId", 'accessToken',$accessToken);
+        $accessToken = json_decode($accessToken, true);
+        if (isset($accessToken['access_token']) && $accessToken['access_token']) {
+            $result = $this->redis->set("accessToken_$wxid", $accessToken['access_token']);
+            if ($result) {
+                $this->redis->expire("accessToken_$wxid", $accessToken['expires_in'] - 600);
+            }
+            return $result;
+        }
+        
 //        $redis->close();
-        return $result;
+        return false;
     }
 }

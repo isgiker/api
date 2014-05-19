@@ -46,15 +46,15 @@ class Wx_Api {
         $data = $this->curl_Http_Request($url);
         $data = explode("\r\n", $data);
         $data = end($data);
-        $data = json_decode($data, true);
-        if (isset($data['errcode']) && $data['errcode']) {
-            die("$data[errmsg]");
-            $access_token = '';
-        } else {
-            $expires_in = $data['expires_in'];
-            $access_token = $data['access_token'];
-        }
-        return $access_token;
+//        $data = json_decode($data, true);
+//        if (isset($data['errcode']) && $data['errcode']) {
+//            die("$data[errmsg]");
+//            $access_token = '';
+//        } else {
+//            $expires_in = $data['expires_in'];
+//            $access_token = $data['access_token'];
+//        }
+        return $data;
     }
     
     /**

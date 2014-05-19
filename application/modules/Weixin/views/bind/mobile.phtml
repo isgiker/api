@@ -39,6 +39,17 @@
                 text-align: left;
                 clear: both;
             }
+            .getCapture{
+                border: 1px #ddd solid;
+                background-color: eee;
+                float: left;
+                width: 130px;
+                height: 45px;
+                line-height: 45px;
+                text-align: center;
+                vertical-align: middle;
+                border-radius: 4px;
+            }
         </style>
 
     </head>
@@ -64,11 +75,26 @@
         <form role="form" id="bindform" method="post" action="">
             <div class="form-group">
                 <h3><label for="mobile">你的手机</label></h3>
-                <input type="number" name="mobile" class="form-control  input-lg" id="mobile" <?php echo $this->_view->getInputAttrs($rules, 'mobile') ?> placeholder="输入手机号码">
+                <input type="number" name="mobile" class="form-control  input-lg" id="mobile" <?php echo $this->_view->getInputAttrs($rules, 'mobile') ?> placeholder="输入手机号码" value="<?php if(isset($mobile))echo $mobile; ?>">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <input name="capture" id="capture" type="number" class="form-control  input-lg" placeholder="请输入验证码" style="width:160px;" <?php echo $this->_view->getInputAttrs($rules, 'capture') ?> value="<?php if(isset($capture))echo $capture; ?>">
+                    </div>
+                    <div class="col-xs-6">
+                        <a href="javascript:void(0);" id="getVerify" class="getCapture">获取验证码</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+                <input type="hidden" name="wxid" value="<?php if(isset($wxid))echo $wxid; ?>" id="wxid"/>
                 <div class="showmsg">
                     <?php
                     if (isset($error['mobile'])) {
                         $this->_view->showValidateError($error['mobile']);
+                    }
+                    if (isset($error['capture'])) {
+                        $this->_view->showValidateError($error['capture']);
+                    }
+                    if(isset($error) && is_string($error)){
+                        $this->_view->showValidateError($error);
                     }
                     ?>
                 </div>
@@ -79,9 +105,51 @@
         <script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
         <script src="//js.chihuobao365.com/js/libs/jquery.validate.js"></script>
         <script type="text/javascript">
+
             $(document).ready(function() {
 //                $("#bindform").validate();
+                //验证码button倒计时
 
+                function countDown() {
+                    var num = 180;
+                    $("#getVerify").attr('disabled', true);
+                    var ts = window.setInterval(function() {
+                        if (num > 0) {
+                            $("#getVerify").html('获取验证码(' + num + ')');
+                            num--;
+                        }
+                        else {
+                            $("#getVerify").html('获取验证码').attr('disabled', false);
+                            window.clearInterval(ts);
+                        }
+                    }, 1000);
+                }
+
+                //发送验证码短信
+                $("#getVerify").bind('click', function() {
+                    var mobile = $("#mobile").val();
+                    var wxid = $("#wxid").val();
+                    var type = 'wxBindMobile';
+                    var _this = this;
+                    $.ajax({
+                        url: '/Common/sendSms',
+                        type: 'POST',
+                        cache: false,
+                        dataType: 'json',
+                        data: {
+                            'mobile': mobile,
+                            'wxid': wxid,
+                            'type': type
+                        },
+                        success: function(rs) {
+                            if (rs.result == "ok") {
+                                countDown();
+                            } else {
+                                alert(rs.msg);
+                            }
+                        }
+                    })
+                });
             });
             function checkPhone(phone) {
                 //var ab=/^(13[0-9]|15[1|0|3|6|7|8|9]|18[6|8|9])\d{8}$/;  
